@@ -156,7 +156,7 @@
                                         </div>
                                     </div>
                                 @endforeach
-                                @if (count($ongoingEvent) > 3)
+                                @if (count($ongoingEvent) >= 3)
                                     <div class="text-center mt-5">
                                         <a href="{{ route('ongoingEvent') }}" class="btn btn-primary btn-sm">Lihat Semua Event Akan Datang</a>
                                     </div>
@@ -203,7 +203,7 @@
                                         </div>
                                     </div>
                                 @endforeach
-                                @if (count($upcomingEvent) > 3)
+                                @if (count($upcomingEvent) >= 3)
                                     <div class="text-center mt-5">
                                         <a href="{{ route('upcomingEvent') }}" class="btn btn-primary btn-sm">Lihat Semua Event Akan Datang</a>
                                     </div>
@@ -240,7 +240,7 @@
                                         </div>
                                     </div>
                                 @endforeach
-                                @if (count($pastEvent) > 3)
+                                @if (count($pastEvent) >= 3)
                                     <div class="text-center mt-5">
                                         <a href="{{ route('pastEvent') }}" class="btn btn-primary btn-sm">Lihat Semua Event yang Sudah Berlangsung</a>
                                     </div>

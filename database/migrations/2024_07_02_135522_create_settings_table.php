@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('youtube_url')->nullable();
             $table->string('instagram_url')->nullable();
             $table->string('facebook_url')->nullable();
+            $table->string('deadline')->nullable();
             $table->timestamps();
         });
     }

@@ -50,7 +50,7 @@ class RolePermissionUserSeeder extends Seeder
         Permission::create(['name' => 'create sponsorship']);
         Permission::create(['name' => 'update sponsorship']);
         Permission::create(['name' => 'delete sponsorship']);
-        Permission::create(['name' => 'show sponsorship']);
+        // Permission::create(['name' => 'show sponsorship']);
 
         // Category
         Permission::create(['name' => 'view category']);
@@ -157,6 +157,7 @@ class RolePermissionUserSeeder extends Seeder
             'hero_image' => 'hero.jpg',
             'contact_phone' => '0839748746476',
             'contact_email' => 'appmeom@gmail.com',
+            'deadline' => 21,
             'contact_address' => 'Jl. Sisingamangaraja Jl. Karangkajen No.76, Brontokusuman, Kec. Mergangsan, Kota Yogyakarta, Daerah Istimewa Yogyakarta 55153'
         ]);
 

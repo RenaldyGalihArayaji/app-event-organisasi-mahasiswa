@@ -10,10 +10,6 @@
             <div class="row same-height">
                 <div class="col-md-12">
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h5><i class="ti-settings"></i> Informasi Akun</h5>
-                        </div>
-                        <!-- Card Body -->
                         <div class="card-body">
                             <form class="row g-3" action="{{ route('settingUpdate', $setting->id)}}" method="post" enctype="multipart/form-data">
                                 @csrf
@@ -21,7 +17,20 @@
                                 <input type="hidden" name="id" value="{{$setting->id}}">
                                 <div class="row mt-3">
                                     <div class="col-md-8">
+                                        <div class="row mb-3">
+                                            <h5><i class="ti-settings"></i> Informasi Batas Pengajuan Laporan</h5>
+                                            <div class="col-md-4 mb-3">
+                                                <label for="deadline" class="form-label">Batas Pengajuan <i class="text-danger">( Hari )</i></label>
+                                                <input type="number" name="deadline" id="deadline" class="form-control @error('deadline') is-invalid @enderror" value="{{ $setting->deadline}}">
+                                                @error('deadline')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message}}
+                                                    </div>
+                                                @enderror
+                                            </div>
+                                        </div>
                                         <div class="row">
+                                            <h5><i class="ti-settings"></i> Informasi Akun</h5>
                                             <div class="col-md-4 mb-3">
                                                 <label for="app_name" class="form-label">Nama Aplikasi</label>
                                                 <input type="text" name="app_name" id="app_name" class="form-control @error('app_name') is-invalid @enderror" value="{{ $setting->app_name}}">

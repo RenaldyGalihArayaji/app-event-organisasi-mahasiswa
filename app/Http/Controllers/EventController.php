@@ -55,8 +55,9 @@ class EventController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'submission_funds' => 'required|numeric',
-            'document_proposal' => 'required|mimes:pdf|max:1048576',
-            'document_rab' => 'required|mimes:pdf|max:1048576',
+            'document_proposal' => 'required|mimes:pdf|max:10485760',
+            'document_rab' => 'required|mimes:pdf|max:10485760', 
+            'deadline' => 'required'
         ], [
             'event_name.required' => 'Nama event harus diisi',
             'category_id.required' => 'Kategori event harus dipilih',
@@ -81,12 +82,13 @@ class EventController extends Controller
             'submission_funds.numeric' => 'Dana Pengajuan harus berupa angka',
             'document_proposal.required' => 'Dokumen proposal harus diupload!',
             'document_proposal.file' => 'Dokumen proposal harus berupa file!',
-            'document_proposal.max' => 'Ukuran file dokumen proposal tidak boleh melebihi 1 MB',
+            'document_proposal.max' => 'Ukuran file dokumen proposal tidak boleh melebihi 10 MB',
             'document_proposal.mimes' => 'Format dokumen proposal hanya PDF!',
             'document_rab.required' => 'Dokumen RAB wajib diupload!',
             'document_rab.file' => 'Dokumen RAB harus berupa file!',
-            'document_rab.max' => 'Ukuran file dokumen RAB tidak boleh melebihi 1 MB',
+            'document_rab.max' => 'Ukuran file dokumen RAB tidak boleh melebihi 10 MB',
             'document_rab.mimes' => 'Format dokumen RAB hanya PDF!',
+            'deadline.required' => 'Deadline Persetujuan harus diisi',
         ]);
 
         if ($validasi->fails()) {
@@ -161,6 +163,7 @@ class EventController extends Controller
             'submission_funds' => $request->submission_funds,
             'document_proposal' => $fileNameProposal,
             'document_rab' => $fileNameRab,
+            'deadline' => $request->deadline
         ]);
 
         // Mengirim notifikasi sukses
@@ -199,13 +202,13 @@ class EventController extends Controller
             'event_price' => 'nullable|numeric|min:0',
             'event_speaker' => 'nullable|string|max:255',
             'participant_quota' => 'required|numeric|min:1',
-            'event_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'event_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2097152',
             'event_venue' => 'required|string|max:500',
             'event_description' => 'required|string|max:5000',
             'submission_funds' => 'required|numeric|min:0',
-            'document_proposal' => 'nullable|file|mimes:pdf|max:2048',
-            'document_rab' => 'nullable|file|mimes:pdf|max:2048',
-            'event_status' => 'required'
+            'document_proposal' => 'nullable|file|mimes:pdf|max:10485760',
+            'document_rab' => 'nullable|file|mimes:pdf|max:10485760',
+            'deadline' => 'required'
         ], [
             'event_name.required' => 'Nama event harus diisi',
             'category_id.required' => 'Kategori event harus dipilih',
@@ -229,10 +232,10 @@ class EventController extends Controller
             'submission_funds.required' => 'Dana Pengajuan harus diisi',
             'submission_funds.numeric' => 'Dana Pengajuan harus berupa angka',
             'document_proposal.mimes' => 'Format dokumen proposal hanya PDF!',
-            'document_proposal.max' => 'Ukuran file dokumen proposal tidak boleh melebihi 1 MB',
+            'document_proposal.max' => 'Ukuran file dokumen proposal tidak boleh melebihi 10 MB',
             'document_rab.mimes' => 'Format dokumen RAB hanya PDF!',
-            'document_rab.max' => 'Ukuran file dokumen RAB tidak boleh melebihi 1 MB',
-            'event_status.required' => 'Status event harus dipilih'
+            'document_rab.max' => 'Ukuran file dokumen RAB tidak boleh melebihi 10 MB',
+            'deadline.required' => 'Deadline Persetujuan harus diisi',
         ]);
 
         $event = Event::findOrFail($id);
@@ -270,7 +273,6 @@ class EventController extends Controller
                 'event_speaker' => strtolower($request->event_speaker),
                 'participant_quota' => $request->participant_quota,
                 'event_price' => $request->event_price,
-                'event_status' => $request->event_status,
             ]);
 
             // Periksa dan simpan file proposal
@@ -296,6 +298,7 @@ class EventController extends Controller
                 'document_proposal' => $proposalFileName,
                 'document_rab' => $rabFileName,
                 'created_at' => now(),
+                'deadline' => $request->deadline
             ]);
 
             Alert::success('Sukses', 'Data Berhasil diperbarui!');

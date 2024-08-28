@@ -22,10 +22,11 @@ class LandingSistemController extends Controller
             $query->where('submission_status', 'approved');
         });
 
-        // Menampilkan Jumlah Event
-        $eventCount = Event::with(['organization', 'submissionEvent' => function ($query) {
+        // Menampilkan Jumlah Event dengan submission_status 'approved'
+        $eventCount = Event::whereHas('submissionEvent', function ($query) {
             $query->where('submission_status', 'approved');
-        }])->count();
+        })->count();
+
 
         // Menampilkan Jumlah Organisasi
         $organizationCount = Organization::where('name', '!=', 'super admin')->count();

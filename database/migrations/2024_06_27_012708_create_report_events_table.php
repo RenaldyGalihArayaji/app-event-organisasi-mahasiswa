@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('organization');
             $table->text('description');
             $table->string('document');
+            $table->dateTime('deadline')->nullable();
             $table->enum('status', ['waiting', 'rejected', 'approved'])->default('waiting');
             $table->text('note')->nullable();
             $table->timestamps();

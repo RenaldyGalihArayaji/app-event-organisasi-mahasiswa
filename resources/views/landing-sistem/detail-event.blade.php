@@ -20,7 +20,7 @@
             <div class="row gy-4 mb-5">
                 <div class="col-md-8">
                     <div class="card mb-3 shadow border-0" style="border-radius: 15px; overflow: hidden;">
-                        <img src="{{ asset('storage/image-events/'. $event->event_image )}}" alt="Event Image" class="img-fluid card-img-top p-3 rounded" style="height: 50vh; object-fit: cover; object-position: center">
+                        <img src="{{ asset('storage/image-events/'. $event->event_image )}}" alt="Event Image" class="img-fluid card-img-top p-3 rounded" style="object-fit: cover; object-position: center">
                         <div class="card-body" style="padding: 1.5rem;">
                             <h3 class="card-title" style="font-size: 1.5rem;font-weight: bold;">{{ ucwords($event->event_name)}}</h3>
                             <div class="d-flex flex-wrap mb-3">
@@ -31,6 +31,7 @@
                                 @else
                                     <span class="badge bg-info text-white me-2 mb-2" style="font-size: 0.7rem; padding: 0.5rem;"><i class="bi bi-gift"></i> Gratis</span>
                                 @endif
+                                <span class="badge bg-secondary me-2 mb-2" style="font-size: 0.7rem; padding: 0.5rem;"><i class="bi bi-globe"></i> {{ $event->organization->name }}</span>
                             </div>
                             <p class="card-text">
                                 <strong class="text-secondary-emphasis"><i class="bi bi-calendar-event"></i> Tanggal:</strong> 

@@ -38,11 +38,13 @@ class ReportController extends Controller
         })->get();
         return view('master.report.create', ['title' => 'Pengajuan Laporan'], compact('event'));
     }
+
     public function store(Request $request)
     {
         $validasi = Validator::make($request->all(), [
             'event' => 'required',
             'description' => 'required',
+            'deadline' => 'required',
             'document' => 'required|mimes:pdf|max:1048576'
         ], [
             'event.required' => 'Pilih event terlebih dahulu',
@@ -51,6 +53,7 @@ class ReportController extends Controller
             'document.mimes' => 'Dokumen harus berupa file PDF!',
             'document.file' => 'Dokumen harus berupa file!',
             'document.max' => 'Ukuran file dokumen tidak boleh melebihi 1 MB',
+            'deadline.required' => 'Batas Tanggal Pengajuan harus diisi!',
         ]);
 
         if ($validasi->fails()) {
@@ -74,6 +77,7 @@ class ReportController extends Controller
                 'organization' => Auth::user()->organization->name,
                 'description' => strtolower($request->description),
                 'document' => $fileName,
+                'deadline' => $request->deadline
             ]);
 
             Alert::success('Sukses', 'Data Berhasil ditambah!');
@@ -108,6 +112,7 @@ class ReportController extends Controller
         $validasi = Validator::make($request->all(), [
             'event' => 'required',
             'description' => 'required',
+            'deadline' => 'required',
             'document' => 'mimes:pdf|max:1048576',
         ], [
             'event.required' => 'Pilih event terlebih dahulu',
@@ -115,6 +120,7 @@ class ReportController extends Controller
             'document.file' => 'Dokumen harus berupa file!',
             'document.max' => 'Ukuran file dokumen tidak boleh melebihi 1 MB',
             'document.mimes' => 'Format dokumen hanya PDF!',
+            'deadline.required' => 'Batas Tanggal Pengajuan harus diisi!',
         ]);
 
         if ($validasi->fails()) {
@@ -143,6 +149,7 @@ class ReportController extends Controller
                     'description' => strtolower($request->description),
                     'document' => $fileName,
                     'created_at' => Carbon::now(),
+                    'deadline' => $request->deadline
                 ]);
             }
 
