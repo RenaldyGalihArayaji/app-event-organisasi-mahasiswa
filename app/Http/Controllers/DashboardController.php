@@ -49,7 +49,8 @@ class DashboardController extends Controller
             $report_rejected = ReportEvent::where(['status' => 'approved'])->count();
 
             // Query untuk event yang sedang berlangsung hari ini
-            $ongoingEvent = Event::whereDate('start_date', '<=', $today)
+            $ongoingEvent = Event::whereDate('end_date', '>=', now())
+                ->whereDate('start_date', '<=', $today)
                 ->whereDate('end_date', '>=', $today)
                 ->with(['organization', 'category'])->whereHas('submissionEvent', function ($ongoingEvent) {
                     $ongoingEvent->where('submission_status', 'approved');

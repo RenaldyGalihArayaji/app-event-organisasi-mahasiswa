@@ -125,23 +125,15 @@
 
     <div class="row">
         <h5 class="mb-3"><i class="ti-money"></i> Data Pengajuan Dana</h5>
-
-        <div class="col-md-4">
-            <div class="mb-3">
-                <label for="no_submission" class="form-label">Nomor Pengajuan</label>
-                <input type="text" class="form-control" id="no_submission" name="no_submission" value="{{ $submission->no_submission }}" disabled>
-                <div id="no_submissionFeedback" class="invalid-feedback"></div>
-            </div>
-        </div>
         
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="mb-3">
                 <label for="date" class="form-label">Tanggal Pengajuan</label>
                 <input type="text" class="form-control" id="date" value="{{ date('d F Y', strtotime($submission->created_at)) }}" disabled>
             </div>
         </div>
         
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="mb-3">
                 <label for="submission_funds" class="form-label">Dana Pengajuan</label>
                 <div class="input-group">
