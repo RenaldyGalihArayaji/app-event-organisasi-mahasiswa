@@ -78,6 +78,7 @@ class UserController extends Controller
             ->get(['id', 'name']);
         return view('master.user.edit', ['title' => 'Edit User'], compact('roles', 'user', 'userRoles', 'organizations'));
     }
+
     public function update(Request $request, User $user)
     {
         $validasi = Validator::make($request->all(), [
@@ -85,7 +86,6 @@ class UserController extends Controller
             'email'         => 'required|email:rfc,dns',
             'role'          => 'required',
             'organization_id' => 'required|exists:organizations,id',
-            // 'password'      => 'nullable|min:6'
         ], [
             'name.required'         => 'Nama harus diisi!',
             'name.min'              => 'Nama minimal 3 karakter!',
@@ -94,7 +94,6 @@ class UserController extends Controller
             'email.email'           => 'Format email salah!',
             'role.required'         => 'Role wajib dipilih!',
             'organization_id.required' => 'Organisasi wajib dipilih!',
-            // 'password.min'          => 'Password minimal 6 karakter!'
         ]);
 
         if ($validasi->fails()) {
@@ -109,11 +108,6 @@ class UserController extends Controller
                 'organization_id' => $request->organization_id,
             ]);
 
-            // if (!empty($request->password)) {
-            //     $data['password'] = Hash::make($request->password);
-            // }
-
-            // $user->update($data);
             $user->syncRoles($request->role);
 
             Alert::success('Sukses', 'Data Berhasil diupdate!');

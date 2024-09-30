@@ -45,7 +45,7 @@
                 </div>
                 <div class="col-md-12">
                     <div class="text-center">
-                        <img src="{{ asset('storage/image-organizations/'. $organization->structure_image) }}" alt="{{ $organization->name}}" class="img-fluid h-100 w-100">
+                        <img src="{{ asset('storage/image-organizations/'. $organization->structure_image) }}" alt="{{ $organization->name}}" class="img-fluid w-50">
                     </div>
                 </div>
             </div>

@@ -13,6 +13,7 @@ use App\Models\SubmissionEvent;
 use App\Models\SubmissionReport;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB; 
 
 class DashboardController extends Controller
 {
@@ -20,7 +21,12 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         $role = Role::where('name', 'super admin')->first();
-        $events = Event::with(['category', 'submissionEvent'])->get();
+        // $events = Event::with(['category', 'submissionEvent'])->get();
+
+        $events = Event::whereHas('submissionEvent', function ($query) {
+            $query->where('submission_status', 'approved');
+        })->get();
+
         $eventActive = Event::whereDate('end_date', '>=', now())->whereHas('submissionEvent', function ($query) {
             $query->where('submission_status', 'approved');
         })->count();
@@ -36,9 +42,13 @@ class DashboardController extends Controller
             $eventActive = Event::whereDate('end_date', '>=', now())->whereHas('submissionEvent', function ($query) {
                 $query->where('submission_status', 'approved');
             })->count();
+
             $eventInactive = Event::whereDate('end_date', '<', now())->whereHas('submissionEvent', function ($query) {
                 $query->where('submission_status', 'approved');
             })->count();
+
+            $eventDeadline = Event::with(['submissionEvent','organization'])->latest()->get();          
+            $reportDeadline = ReportEvent::latest()->get();          
 
             $submissionEvent_waiting = SubmissionEvent::where('submission_status', '=', 'waiting')->count();
             $submissionEvent_approved = SubmissionEvent::where('submission_status', '=', 'approved')->count();
@@ -75,6 +85,9 @@ class DashboardController extends Controller
                 ->with(['organization', 'category'])->whereHas('submissionEvent', function ($ongoingEvent) {
                     $ongoingEvent->where('submission_status', 'approved');
                 })->latest()->paginate(5);
+            
+            $eventDeadline = Event::with(['submissionEvent','organization'])->where('user_id', $user->id)->latest()->get();
+            $reportDeadline = ReportEvent::where('user_id', $user->id)->latest()->get();
         }
 
         return view('master.dashboard.index', [
@@ -88,7 +101,88 @@ class DashboardController extends Controller
             'report_waiting' => $report_waiting,
             'report_approved' => $report_approved,
             'report_rejected' => $report_rejected,
-            'ongoingEvent' => $ongoingEvent
+            'ongoingEvent' => $ongoingEvent,
+            'eventDeadline' => $eventDeadline,
+            'reportDeadline' => $reportDeadline,
         ]);
     }
+
+
+    // public function index()
+    // {
+    //     $user = Auth::user();
+    //     $role = Role::where('name', 'super admin')->first();
+    //     $events = Event::with(['category', 'submissionEvent'])->get();
+    //     $eventActive = Event::whereDate('end_date', '>=', now())->whereHas('submissionEvent', function ($query) {
+    //         $query->where('submission_status', 'approved');
+    //     })->count();
+    //     $eventInactive = Event::whereDate('end_date', '<', now())->whereHas('submissionEvent', function ($query) {
+    //         $query->where('submission_status', 'approved');
+    //     })->count();
+
+    //     //Ambil tanggal hari ini
+    //     $today = Carbon::today();
+
+    //     // Event yang mendekati deadline (H-5)
+    //     $eventDeadlineSoon = DB::table('submission_events')
+    //     ->where('submission_status', 'waiting')
+    //     ->whereDate('deadline', '>=', $today)
+    //     ->whereDate('deadline', '<=', $today->copy()->addDays(5))
+    //     ->get();
+
+    //     if ($role && $user->hasRole('super admin')) {
+    //         $submissionEvent_waiting = SubmissionEvent::where('submission_status', '=', 'waiting')->count();
+    //         $submissionEvent_approved = SubmissionEvent::where('submission_status', '=', 'approved')->count();
+    //         $submissionEvent_rejected = SubmissionEvent::where('submission_status', '=', 'rejected')->count();
+
+    //         $report_waiting = ReportEvent::where(['status' => 'waiting'])->count();
+    //         $report_approved = ReportEvent::where(['status' => 'rejected'])->count();
+    //         $report_rejected = ReportEvent::where(['status' => 'approved'])->count();
+
+    //         // Query untuk event yang sedang berlangsung hari ini
+    //         $ongoingEvent = Event::whereDate('end_date', '>=', now())
+    //             ->whereDate('start_date', '<=', $today)
+    //             ->whereDate('end_date', '>=', $today)
+    //             ->with(['organization', 'category'])->whereHas('submissionEvent', function ($ongoingEvent) {
+    //                 $ongoingEvent->where('submission_status', 'approved');
+    //             })->latest()->paginate(5);
+    //     } else {
+    //         $eventActive = Event::where(['user_id' => $user->id])->whereDate('end_date', '>=', now())->count();
+    //         $eventInactive = Event::where(['user_id' => $user->id])->whereDate('end_date', '<', now())->count();
+
+    //         $submissionEvent_waiting = SubmissionEvent::where(['submission_status' => 'waiting', 'user_id' => $user->id])->count();
+    //         $submissionEvent_rejected = SubmissionEvent::where(['submission_status' => 'rejected', 'user_id' => $user->id])->count();
+    //         $submissionEvent_approved = SubmissionEvent::where(['submission_status' => 'approved', 'user_id' => $user->id])->count();
+
+    //         $report_waiting = ReportEvent::where(['status' => 'waiting', 'user_id' => $user->id])->count();
+    //         $report_approved = ReportEvent::where(['status' => 'rejected', 'user_id' => $user->id])->count();
+    //         $report_rejected = ReportEvent::where(['status' => 'approved', 'user_id' => $user->id])->count();
+
+    //         // Query untuk event yang sedang berlangsung hari ini
+    //         $ongoingEvent = Event::whereDate('end_date', '>=', now())
+    //             ->where('user_id', $user->id)
+    //             ->whereDate('start_date', '<=', $today)
+    //             ->whereDate('end_date', '>=', $today)
+    //             ->with(['organization', 'category'])->whereHas('submissionEvent', function ($ongoingEvent) {
+    //                 $ongoingEvent->where('submission_status', 'approved');
+    //             })->latest()->paginate(5);
+    //     }
+
+    //     return view('master.dashboard.index', [
+    //         'title' => 'Dashboard',
+    //         'submissionEvent_waiting' => $submissionEvent_waiting,
+    //         'submissionEvent_approved' => $submissionEvent_approved,
+    //         'submissionEvent_rejected' => $submissionEvent_rejected,
+    //         'events' => $events,
+    //         'eventActive' => $eventActive,
+    //         'eventInactive' => $eventInactive,
+    //         'report_waiting' => $report_waiting,
+    //         'report_approved' => $report_approved,
+    //         'report_rejected' => $report_rejected,
+    //         'ongoingEvent' => $ongoingEvent,
+    //         'eventDeadlineSoon' => $eventDeadlineSoon // Tambahkan variabel ini
+    //     ]);
+    // }
+
+    
 }

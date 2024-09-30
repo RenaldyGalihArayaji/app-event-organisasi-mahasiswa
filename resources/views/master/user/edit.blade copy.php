@@ -1,6 +1,6 @@
 <form id="form-user" method="POST" action="{{ route('user.update', $user->id) }}">
     @csrf
-    @method('PUT')
+    <!-- @method('PUT') -->
     <div class="row">
         @if ($user->organization->name == 'super admin')
             <div class="col-md-4">
@@ -72,5 +72,5 @@
             </div>
         @endif
     </div>
-    <button type="submit" class="btn btn-primary mb-3" onclick="update({{$user->id}})">Update</button>
+    <button type="submit" class="btn btn-primary mb-3">Update</button>
 </form>

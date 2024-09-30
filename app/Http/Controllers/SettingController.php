@@ -25,7 +25,8 @@ class SettingController extends Controller
             'contact_email' => 'required|email',
             'contact_phone' => 'required|max:20',
             'contact_address' => 'required|max:250',
-            'hero_name' => 'required|max:30'
+            'hero_name' => 'required|max:30',
+            'deadline' => 'required',
         ], [
             'app_logo.image' => 'File harus berupa gambar',
             'hero_image.image' => 'File harus berupa gambar',
@@ -40,7 +41,8 @@ class SettingController extends Controller
             'contact_address.required' => 'Alamat harus diisi',
             'contact_address.max' => 'Alamat maksimal 150 karakter',
             'hero_name.required' => 'Nama Hero Section harus diisi',
-            'hero_name.max' => 'Nama Hero Section maksimal 25 karakter'
+            'hero_name.max' => 'Nama Hero Section maksimal 25 karakter',
+            'deadline.required' => 'Batas Pengajuan harus diisi',
         ]);
 
         $setting = Setting::find($id);
@@ -73,6 +75,7 @@ class SettingController extends Controller
             'facebook_url' => $request->facebook_url,
             'app_logo' => $fileNameLogo,
             'hero_image' => $fileNameHero,
+            'deadline' => $request->deadline,
         ]);
 
         Alert::success('Sukses', 'Data Berhasil Diperbarui!!');

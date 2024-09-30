@@ -107,7 +107,7 @@
 
         <h5 class="mb-3"><i class="ti-money"></i> Data Pengajuan Dana</h5>
 
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="mb-3">
                 <label for="submission_funds" class="form-label">Dana Pengajuan <span class="text-danger">*</span></label>
                 <div class="input-group">
@@ -116,9 +116,16 @@
                 </div>
                 <div id="submission_fundsFeedback" class="invalid-feedback"></div>
             </div>
-        </div>        
+        </div>     
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for="deadline" class="form-label">Batas Waktu Persetujuan<span class="text-danger">*</span></label>
+                <input type="date" class="form-control" id="deadline" name="deadline">
+                <div id="deadlineFeedback" class="invalid-feedback"></div>
+            </div>
+        </div>      
 
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="mb-3">
                 <label for="document_proposal" class="form-label">Dokumen Proposal <span class="text-danger">*</span></label>
                 <span class="text-danger" style="font-size: 13px;">*Format : PDF*</span>
@@ -126,7 +133,7 @@
                 <div id="document_proposalFeedback" class="invalid-feedback"></div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="mb-3">
                 <label for="document_rab" class="form-label">Dokumen RAB <span class="text-danger">*</span></label>
                 <span class="text-danger" style="font-size: 13px;">*Format : PDF*</span>

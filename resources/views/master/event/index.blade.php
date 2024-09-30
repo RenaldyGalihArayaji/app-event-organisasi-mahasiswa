@@ -14,11 +14,36 @@
                         <h4>Tabel Pengajuan Event</h4>
                     </div>
                     <div class="card-body">
+
+                        @php
+                            // Ambil event yang terkait dengan user atau semua event jika super-admin
+                            $eventDash = Auth::user()->hasRole('super admin')
+                                ? \App\Models\Event::with('organization')->get()
+                                : \App\Models\Event::with('organization')->where('user_id', Auth::user()->id)->get();
+                        
+                            // Ambil nama event dari laporan yang sudah disetujui
+                            $approvedReports = \App\Models\ReportEvent::where('status', 'approved')->pluck('event');
+                        @endphp
+                        
                         @can('create event')
-                            <button class="btn mb-3 icon-left btn-primary btn-sm" onclick="create()">
-                                <i class="ti-plus"></i>Tambah Data
-                            </button>
+                            {{-- Cek apakah ada event dari eventDash yang namanya sudah ada di approvedReports --}}
+                            @php
+                                $eventExists = $eventDash->contains(function($event) use ($approvedReports) {
+                                    return $approvedReports->contains($event->event_name);
+                                });
+                            @endphp
+                            {{-- Jika event di database kosong atau tidak ada bisa tambah data --}}
+                            @if ($eventDash->isEmpty() || $eventExists)
+                                <button class="btn mb-3 icon-left btn-primary btn-sm" onclick="create()">
+                                    <i class="ti-plus"></i>Tambah Data
+                                </button>
+                            @else
+                                <button class="btn mb-3 icon-left btn-primary btn-sm" onclick="info()">
+                                    <i class="ti-plus"></i>Tambah Data
+                                </button>
+                            @endif
                         @endcan
+                    
                         <table id="example2" class="table dt-responsive display">
                             <thead>
                                 <tr>
@@ -283,6 +308,15 @@
                 }
             })
         });
+
+        function info() {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Peringatan',
+                text: 'Event ini tidak dapat ditambahkan karena laporan event sebelumnya belum diajukan atau belum disetujui oleh super admin.',
+                confirmButtonText: 'OK'
+            });
+        }
 
 
     </script>

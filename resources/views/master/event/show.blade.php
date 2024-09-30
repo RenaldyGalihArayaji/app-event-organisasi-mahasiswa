@@ -75,19 +75,25 @@
 
     <div class="col-md-12">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="mb-3">
                     <label for="date" class="form-label">Tanggal Pengajuan</label>
                     <input type="text" class="form-control" id="date" value="{{ date('d F Y', strtotime($submission->created_at)) }}" disabled>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
+                <div class="mb-3">
+                    <label for="date" class="form-label">Batas Tanggal Pengajuan</label>
+                    <input type="text" class="form-control" id="date" value="{{ date('d F Y', strtotime($submission->deadline)) }}" disabled>
+                </div>
+            </div>
+            <div class="col-md-3">
                 <div class="mb-3">
                     <label for="submission_funds" class="form-label">Dana Pengajuan</label>
                     <input type="text" class="form-control" id="submission_funds" value="@currency($submission->submission_funds)" disabled>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="mb-3">
                     <label for="submission_note" class="form-label">Catatan</label>
                     <input type="text" class="form-control" id="submission_note" value="{{ ucwords($submission->submission_note) }}" disabled>

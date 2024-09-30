@@ -49,7 +49,9 @@
                               <a href="{{ $event->documentation->gDrive_url}}" class="text-decoration-none" target="_blank">Klik disini</a>
                           </h6>
                         @endif
-                        <h6>
+                        <span class="badge bg-info text-white m e-2 mb-2" style="font-size: 0.7rem; padding: 0.5rem;"> {{ date("d F Y", strtotime($event->documentation->created_at)) }}</span>
+                        <span class="badge bg-secondary text-white m e-2 mb-2" style="font-size: 0.7rem; padding: 0.5rem;"> {{ $event->organization->name }}</span><br>
+                        <h6 class="mt-3">
                             <i class="bi bi-file-text"></i> Deskripsi
                         </h6>
                         <p class="card-text" style="text-align: justify;">{{ $event->documentation->description}}</p>
@@ -60,7 +62,7 @@
     
             <div class="col-md-4">
                 <div class="card p-3 shadow border-0" style="border-radius: 15px; overflow: hidden;">
-                    <h5 class="text-center py-2">
+                    <h5 class="text-center">
                         <strong>- {{ ucwords($event->event_name)}} -</strong>
                     </h5>
                     <img src="{{ asset('storage/image-events/'. $event->event_image )}}" alt="Event Image" class="img-fluid card-img-top" style="height: 50vh; object-fit: cover; object-position: center">

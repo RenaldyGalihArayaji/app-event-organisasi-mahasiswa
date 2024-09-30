@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('document_proposal');
             $table->string('document_rab');
             $table->decimal('submission_funds', 15, 2);
+            $table->dateTime('deadline')->nullable();
             $table->enum('submission_status', ['waiting', 'rejected', 'approved'])->default('waiting');
             $table->text('submission_note')->nullable();
             $table->timestamps();
